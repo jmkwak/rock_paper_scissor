@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Simple Game of Rock Paper Scissors</title>
+</head>
+<body>
+  <script>
+
+  //the following GLOBALS are for keeping score of all five rounds
+  let TOTAL_WIN = 0;
+  let TOTAL_LOSS = 0;
+  let TOTAL_DRAW = 0;
+    //function for the computer to randomly select rock, paper, or scissors
+    function computerPlay() {
+      let ran = Math.random();
+      let hand;
+      if(ran < .33) {
+        hand = "rock";
+      } else if(ran < .66) {
+        hand = "paper";
+      } else {
+        hand = "scissors"
+      }
+      return hand;
+    }
+
+    //function to decide the winner of the round
+    function playRound(playerSelection, computerSelection) {
+      let result;
+      if(playerSelection == "rock") {
+        if(computerSelection == "rock") {
+          result = "draw";
+          ++TOTAL_DRAW;
+        } else if(computerSelection == "paper") {
+          result = "loss";
+          ++TOTAL_LOSS;
+        } else {
+          result = "win";
+          ++TOTAL_WIN;
+        }
+      } else if(playerSelection == "paper") {
+        if(computerSelection == "paper") {
+          result = "draw";
+          ++TOTAL_DRAW;
+        } else if(computerSelection == "rock") {
+          result = "win";
+          ++TOTAL_WIN;
+        } else {
+          result = "loss";
+          ++TOTAL_LOSS;
+        }
+      } else if(playerSelection == "scissors"){
+        if(computerSelection == "scissors") {
+          result = "draw";
+          ++TOTAL_DRAW;
+        } else if(computerSelection == "rock") {
+          result = "loss";
+          ++TOTAL_LOSS;
+        } else {
+          result = "win";
+          ++TOTAL_WIN;
+        }
+      } else {
+        result = "unknown";
+      }
+      return result;
+    }
+
+    //function to output result to player
+    function resultOfRound(playerSelection, computerSelection, result) {
+      let output;
+      switch(result) {
+        case "win":
+          output = `You Win! ${playerSelection} beat ${computerSelection}`;
+          break;
+
+        case "loss":
+          output = `You Loss! ${computerSelection} beat ${playerSelection}`;
+          break;
+
+        case "draw":
+          output = "It's a Draw!";
+          break;
+
+        default:
+          output = "Player entered unknown hand. Check your spelling next time!";
+      }
+      return output;
+    }
+
+    //game driver
+    function game() {
+      for(let i = 0; i < 5; ++i) {
+        let userSelection = prompt("Pick one of the following: rock, paper, scissors!");
+        userSelection.toLowerCase();
+        let computerSelection = computerPlay();
+        console.log(resultOfRound(userSelection, computerSelection, playRound(userSelection, computerSelection)));
+        console.log(`Total Win:${TOTAL_WIN}, Total Loss: ${TOTAL_LOSS}, Total Draw: ${TOTAL_DRAW}`);
+      }
+    }
+  </script>
+</body>
+</html>
