@@ -5,12 +5,23 @@
   <title>Simple Game of Rock Paper Scissors</title>
 </head>
 <body>
+
+  <div id="title"> GAME OF ROCK PAPER SCISSORS!</div>
+
+  <button id="rock" onClick="gamePlay(this.id)">ROCK</button>
+  <button id="paper" onClick="gamePlay(this.id)">PAPER</button>
+  <button id="scissors" onClick="gamePlay(this.id)">SCISSOR</button>
+
+  <div id="results"></div>
+
+
   <script>
 
   //the following GLOBALS are for keeping score of all five rounds
   let TOTAL_WIN = 0;
   let TOTAL_LOSS = 0;
   let TOTAL_DRAW = 0;
+  let ROUNDS_PLAYED = 0;
     //function for the computer to randomly select rock, paper, or scissors
     function computerPlay() {
       let ran = Math.random();
@@ -89,16 +100,54 @@
       return output;
     }
 
+
     //game driver
-    function game() {
-      for(let i = 0; i < 5; ++i) {
-        let userSelection = prompt("Pick one of the following: rock, paper, scissors!");
-        userSelection.toLowerCase();
-        let computerSelection = computerPlay();
-        console.log(resultOfRound(userSelection, computerSelection, playRound(userSelection, computerSelection)));
-        console.log(`Total Win:${TOTAL_WIN}, Total Loss: ${TOTAL_LOSS}, Total Draw: ${TOTAL_DRAW}`);
+    //8.13.18-- got rid of playing five rounds
+    function gamePlay(clicked_id) {
+      ++ROUNDS_PLAYED;
+
+      //which button did the user pick?
+      /*let buttonChoice;
+      let buttons = document.querySelectorAll('button');
+      buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+          buttonChoice = e.target.id;
+        });
+      });*/
+
+      let buttonChoice = clicked_id;
+      let computerSelection = computerPlay();
+
+      //display results
+      const resultContainer = document.querySelector('#results');
+      const result = document.createElement('p');
+
+      result.classList.add('resultContent');
+      result.textContent = resultOfRound(buttonChoice, computerSelection, playRound(buttonChoice, computerSelection));
+
+      resultContainer.appendChild(result);
+
+      if(ROUNDS_PLAYED === 5) {
+        const streak = document.createElement('p');
+        streak.classList.add('streakOfResults');
+        streak.textContent = `Total Win:${TOTAL_WIN}, Total Loss: ${TOTAL_LOSS}, Total Draw: ${TOTAL_DRAW}`;
+        resultContainer.appendChild(streak);
+
+        //announce winner of game
+        const isWinner = document.createElement('p');
+        isWinner.classList.add('winnerOfFiveRounds');
+        if(TOTAL_WIN > TOTAL_LOSS) {
+          isWinner.textContent = "Player Wins!";
+        } else if(TOTAL_LOSS > TOTAL_WIN) {
+          isWinner.textContent = "Player Losses!";
+        } else {
+          isWinner.textContent = "It's a DRAW!";
+        }
+        resultContainer.appendChild(isWinner);
       }
     }
+
+
   </script>
 </body>
 </html>
