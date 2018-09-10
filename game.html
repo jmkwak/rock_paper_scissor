@@ -3,6 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Simple Game of Rock Paper Scissors</title>
+
+  <link href="style/reset.css" rel="stylesheet" type="text/css">
+  <link href="style/style.css" rel="stylesheet" type="text/css" media="all">
+  <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru" rel="stylesheet">
 </head>
 <body>
 
@@ -79,23 +83,25 @@
     }
 
     //function to output result to player
-    function resultOfRound(playerSelection, computerSelection, result) {
+    function resultOfRound(playerSelection, computerSelection, result, count) {
       let output;
+      output = count;
+      output += ". ";
       switch(result) {
         case "win":
-          output = `You Win! ${playerSelection} beat ${computerSelection}`;
+          output += `You Win! ${playerSelection} beat ${computerSelection}`;
           break;
 
         case "loss":
-          output = `You Loss! ${computerSelection} beat ${playerSelection}`;
+          output += `You Loss! ${computerSelection} beat ${playerSelection}`;
           break;
 
         case "draw":
-          output = "It's a Draw!";
+          output += "It's a Draw!";
           break;
 
         default:
-          output = "Player entered unknown hand. Check your spelling next time!";
+          output += "Player entered unknown hand. Check your spelling next time!";
       }
       return output;
     }
@@ -123,11 +129,11 @@
       const result = document.createElement('p');
 
       result.classList.add('resultContent');
-      result.textContent = resultOfRound(buttonChoice, computerSelection, playRound(buttonChoice, computerSelection));
+      result.textContent = resultOfRound(buttonChoice, computerSelection, playRound(buttonChoice, computerSelection), ROUNDS_PLAYED);
 
       resultContainer.appendChild(result);
 
-      if(ROUNDS_PLAYED === 5) {
+      if(ROUNDS_PLAYED % 5 == 0) {
         const streak = document.createElement('p');
         streak.classList.add('streakOfResults');
         streak.textContent = `Total Win:${TOTAL_WIN}, Total Loss: ${TOTAL_LOSS}, Total Draw: ${TOTAL_DRAW}`;
@@ -138,11 +144,15 @@
         isWinner.classList.add('winnerOfFiveRounds');
         if(TOTAL_WIN > TOTAL_LOSS) {
           isWinner.textContent = "Player Wins!";
+          //document.write("\n");
         } else if(TOTAL_LOSS > TOTAL_WIN) {
           isWinner.textContent = "Player Losses!";
+          //document.write("\n");
         } else {
           isWinner.textContent = "It's a DRAW!";
+          //document.write("\n");
         }
+        isWinner.textContent += "\n";
         resultContainer.appendChild(isWinner);
       }
     }
